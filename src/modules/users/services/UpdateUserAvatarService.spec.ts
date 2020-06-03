@@ -62,14 +62,14 @@ describe('UpdateUserAvatar', () => {
 
     await updateAvatar.execute({
       user_id: user.id,
-      avatarFilename: 'avatar.jpg',
+      avatarFilename: 'avatar.jpeg',
     });
 
     await updateAvatar.execute({
       user_id: user.id,
-      avatarFilename: 'avatar2.jpg',
+      avatarFilename: 'avatar2.jpeg',
     });
-    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
-    expect(user.avatar).toBe('avatar2.jpg');
+    expect(deleteFile).toHaveBeenCalledWith('avatar.jpeg');
+    expect(user.avatar).toBe('avatar2.jpeg');
   });
 });
