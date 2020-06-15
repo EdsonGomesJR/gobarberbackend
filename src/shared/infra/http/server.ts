@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 // Disponibiliza a imagem estaticamente usando localhost:3333/files/imgname
-app.use('/files', express.static(uploadConfig.directory));
+app.use('/files', express.static(uploadConfig.uploadFolder));
 app.use(routes);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {

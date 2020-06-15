@@ -5,15 +5,21 @@ import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepo
 import UpdateAvatarService from '@modules/users/services/UpdateUserAvatarService';
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 
-describe('UpdateUserAvatar', () => {
-  it('shoulbe able to create a new user', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
+let fakeUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateAvatar: UpdateAvatarService;
 
-    const updateAvatar = new UpdateAvatarService(
+describe('UpdateUserAvatar', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeStorageProvider = new FakeStorageProvider();
+
+    updateAvatar = new UpdateAvatarService(
       fakeUsersRepository,
       fakeStorageProvider
     );
+  });
+  it('shoulbe able to create a new user', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Edson',
       email: 'edson@edson.com',
@@ -28,14 +34,6 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should not be able to update avatar from non existing user', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const updateAvatar = new UpdateAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider
-    );
-
     await expect(
       updateAvatar.execute({
         user_id: 'non-existing-user',
@@ -45,15 +43,9 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should be able to delete an old avatar when updating a new one', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
     // podemos observar se a função foi executada ou não, com esse spy
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 
-    const updateAvatar = new UpdateAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider
-    );
     const user = await fakeUsersRepository.create({
       name: 'Edson',
       email: 'edson@edson.com',
